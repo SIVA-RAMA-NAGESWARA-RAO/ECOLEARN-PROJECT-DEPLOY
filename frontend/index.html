@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoLearn — Sustainable Living Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g50:#EAF5DE;--g100:#C0DD97;--g200:#97C459;--g400:#639922;--g600:#3B6D11;--g800:#27500A;
+  --t50:#E1F5EE;--t100:#9FE1CB;--t200:#5DCAA5;--t400:#1D9E75;--t600:#0F6E56;--t800:#085041;
+  --a50:#FAEEDA;--a100:#FAC775;--a200:#EF9F27;--a400:#BA7517;--a600:#854F0B;--a800:#633806;
+  --b50:#E6F1FB;--b100:#B5D4F4;--b400:#378ADD;--b600:#185FA5;--b800:#0C447C;
+  --r50:#FCEBEB;--r100:#F7C1C1;--r400:#E24B4A;--r800:#501313;
+  --c50:#FAECE7;--c100:#F5C4B3;--c400:#D85A30;--c800:#4A1B0C;
+  --gy50:#F1EFE8;--gy100:#D3D1C7;--gy400:#888780;--gy800:#444441;
+  --bg:#F5F7F2;--card:#FFFFFF;--text:#1C1E18;--muted:#6B6E62;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+  --rad:14px;--rad-sm:9px;
+  --shadow:0 1px 3px rgba(0,0,0,0.05),0 4px 14px rgba(0,0,0,0.04);
+  --shadow-h:0 6px 20px rgba(0,0,0,0.10),0 2px 6px rgba(0,0,0,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+.serif{font-family:'Fraunces',serif;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--gy100);border-radius:10px;}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;min-height:100vh;}
+.main-content{flex:1;display:flex;}
+.sidebar{width:240px;min-height:calc(100vh - 60px);background:var(--card);border-right:0.5px solid var(--border);position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column;padding:1rem 0;transition:transform 0.3s;}
+.content{flex:1;padding:2rem;overflow:auto;max-width:1200px;}
+
+/* ── TOPBAR ── */
+.topbar{height:60px;background:var(--card);border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:1rem;padding:0 1.5rem;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--g800);display:flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap;}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--g600),var(--t400));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+
+/* ── SEARCH BAR ── */
+.search-wrap{flex:1;max-width:480px;position:relative;}
+.search-input{width:100%;padding:8px 14px 8px 38px;border:0.5px solid var(--border2);border-radius:8px;font-family:'Sora',sans-serif;font-size:14px;background:var(--bg);outline:none;transition:border-color 0.18s,box-shadow 0.18s;}
+.search-input:focus{border-color:var(--t400);box-shadow:0 0 0 3px rgba(29,158,117,0.12);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;}
+.search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:0.5px solid var(--border2);border-radius:var(--rad-sm);box-shadow:var(--shadow-h);z-index:200;display:none;max-height:360px;overflow-y:auto;}
+.search-results.open{display:block;}
+.sr-group{padding:6px 10px 4px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.sr-item{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background 0.12s;font-size:13px;}
+.sr-item:hover{background:var(--g50);}
+.sr-type{font-size:10px;padding:2px 7px;border-radius:100px;font-weight:500;}
+
+/* ── TOPBAR USER ── */
+.topbar-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.pts-badge{background:var(--g50);color:var(--g800);padding:5px 11px;border-radius:100px;font-size:12px;font-weight:600;border:0.5px solid var(--g100);}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--t400);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;overflow:hidden;flex-shrink:0;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.topbar-btn{padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'Sora',sans-serif;transition:all 0.18s;}
+.btn-primary{background:var(--t400);color:#fff;}
+.btn-primary:hover{background:var(--t600);}
+.btn-outline{background:none;border:0.5px solid var(--border2);color:var(--text);}
+.btn-outline:hover{background:var(--bg);}
+
+/* ── SIDEBAR NAV ── */
+.nav-section{padding:0 0.75rem;margin-bottom:0.25rem;}
+.nav-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;padding:8px 12px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rad-sm);font-size:13px;font-weight:400;color:var(--muted);cursor:pointer;transition:all 0.15s;margin-bottom:1px;}
+.nav-item:hover{background:var(--g50);color:var(--g800);}
+.nav-item.active{background:var(--g50);color:var(--g800);font-weight:500;}
+.nav-item .ni{width:18px;text-align:center;flex-shrink:0;}
+.nav-item .badge{margin-left:auto;background:var(--t400);color:#fff;font-size:10px;padding:1px 6px;border-radius:100px;font-weight:600;}
+
+/* ── PAGES ── */
+.page{display:none;animation:fadeIn 0.22s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:1.75rem;}
+.page-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:500;color:var(--text);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--muted);}
+
+/* ── GRID ── */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.grid-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.5rem;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);padding:1.25rem;transition:all 0.18s;}
+.card-hover:hover{transform:translateY(-2px);box-shadow:var(--shadow-h);border-color:var(--border2);cursor:pointer;}
+.card-thumb{height:140px;border-radius:10px;margin:-1.25rem -1.25rem 1rem;background:var(--g50);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;position:relative;}
+.card-thumb img{width:100%;height:100%;object-fit:cover;}
+.stat-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad-sm);padding:1rem 1.25rem;}
+.stat-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.3px;}
+.stat-val{font-family:'Fraunces',serif;font-size:2rem;font-weight:500;line-height:1.2;}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── TAGS / BADGES ── */
+.tag{display:inline-block;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:500;}
+.tag-green{background:var(--g50);color:var(--g800);}
+.tag-teal{background:var(--t50);color:var(--t800);}
+.tag-amber{background:var(--a50);color:var(--a800);}
+.tag-blue{background:var(--b50);color:var(--b800);}
+.tag-red{background:var(--r50);color:var(--r800);}
+.tag-gray{background:var(--gy50);color:var(--gy800);}
+.tag-coral{background:var(--c50);color:var(--c800);}
+
+/* ── PROGRESS ── */
+.prog-bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden;}
+.prog-fill{height:6px;border-radius:100px;transition:width 0.5s ease;}
+.prog-mini{height:3px;background:var(--border);border-radius:100px;margin-top:4px;}
+.prog-mini-fill{height:3px;border-radius:100px;}
+
+/* ── MODULE CARD ── */
+.mod-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);overflow:hidden;transition:all 0.18s;cursor:pointer;}
+.mod-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-h);border-color:var(--border2);}
+.mod-thumb{height:150px;background:var(--g50);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
+.mod-thumb img{width:100%;height:100%;object-fit:cover;}
+.mod-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.35),transparent);}
+.mod-body{padding:1rem;}
+.mod-meta{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.mod-title{font-size:14px;font-weight:600;margin-bottom:4px;line-height:1.4;}
+.mod-desc{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mod-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;margin-top:10px;border-top:0.5px solid var(--border);}
+.tick{width:20px;height:20px;border-radius:50%;background:var(--g400);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+.tick-empty{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;}
+
+/* ── MODULE DETAIL ── */
+.mod-detail-hero{background:linear-gradient(135deg,var(--g800),var(--t600));border-radius:var(--rad);padding:2rem;color:#fff;margin-bottom:1.5rem;}
+.mod-detail-hero h1{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:500;margin-bottom:6px;}
+.mod-detail-hero p{color:rgba(255,255,255,0.72);font-size:13px;margin-bottom:1.25rem;}
+.items-list{display:flex;flex-direction:column;gap:8px;}
+.item-row{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;}
+.item-row:hover{border-color:var(--t400);background:var(--t50);}
+.item-row.done{border-left:3px solid var(--g400);}
+.item-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.item-info{flex:1;min-width:0;}
+.item-title{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-meta{font-size:11px;color:var(--muted);}
+
+/* ── QUIZ ── */
+.quiz-q{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);padding:1.5rem;margin-bottom:1rem;}
+.quiz-q-text{font-size:15px;font-weight:500;margin-bottom:1rem;}
+.quiz-q-num{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.opt{border:1.5px solid var(--border2);border-radius:var(--rad-sm);padding:11px 14px;font-size:14px;cursor:pointer;transition:all 0.15s;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.opt:hover{border-color:var(--t400);background:var(--t50);}
+.opt.selected{border-color:var(--t400);background:var(--t50);color:var(--t800);}
+.opt.correct{border-color:var(--g400);background:var(--g50);color:var(--g800);}
+.opt.wrong{border-color:var(--r400);background:var(--r50);color:var(--r800);}
+.opt-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;}
+
+/* ── TABLES ── */
+.table-wrap{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:11px 14px;font-size:11px;font-weight:600;color:var(--muted);background:var(--gy50);border-bottom:0.5px solid var(--border);text-transform:uppercase;letter-spacing:0.4px;}
+td{padding:12px 14px;font-size:13px;border-bottom:0.5px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.3px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--rad-sm);font-family:'Sora',sans-serif;font-size:14px;background:var(--card);outline:none;transition:border-color 0.18s,box-shadow 0.18s;color:var(--text);}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--t400);box-shadow:0 0 0 3px rgba(29,158,117,0.1);}
+.form-textarea{resize:vertical;min-height:90px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn{padding:10px 20px;border-radius:var(--rad-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Sora',sans-serif;transition:all 0.18s;display:inline-flex;align-items:center;gap:7px;}
+.btn-green{background:var(--g600);color:#fff;}
+.btn-green:hover{background:var(--g800);}
+.btn-teal{background:var(--t400);color:#fff;}
+.btn-teal:hover{background:var(--t600);}
+.btn-ghost{background:none;border:0.5px solid var(--border2);color:var(--text);}
+.btn-ghost:hover{background:var(--bg);}
+.btn-red{background:var(--r400);color:#fff;}
+.btn-red:hover{background:var(--r800);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-full{width:100%;}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:1.5px dashed var(--border2);border-radius:var(--rad);padding:2rem;text-align:center;cursor:pointer;transition:all 0.18s;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--t400);background:var(--t50);}
+.upload-zone input{display:none;}
+.upload-icon{font-size:2rem;margin-bottom:8px;}
+.upload-text{font-size:13px;color:var(--muted);}
+.upload-preview{margin-top:10px;display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg);border-radius:8px;font-size:13px;}
+.upload-preview img{width:48px;height:48px;object-fit:cover;border-radius:6px;}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border-radius:18px;padding:2rem;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-wide{max-width:760px;}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;}
+.modal-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:500;}
+.modal-close{width:30px;height:30px;border-radius:7px;border:0.5px solid var(--border2);background:none;cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── AUTH ── */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1C2B1C,#1a3a2a,#0d2820);padding:1rem;}
+.auth-card{background:var(--card);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.3);}
+.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:2rem;}
+.auth-logo .logo-mark{width:38px;height:38px;border-radius:10px;font-size:18px;}
+.auth-logo span{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--g800);}
+.auth-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:500;margin-bottom:4px;}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.auth-tabs{display:flex;border-bottom:0.5px solid var(--border);margin-bottom:1.5rem;}
+.auth-tab{padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all 0.18s;background:none;border-left:none;border-right:none;border-top:none;font-family:'Sora',sans-serif;}
+.auth-tab.active{color:var(--t600);border-bottom-color:var(--t400);}
+.auth-link{font-size:13px;color:var(--t600);cursor:pointer;text-decoration:underline;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1C1E18;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:500;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.25);}
+.toast.show{opacity:1;}
+.toast.success{background:var(--g800);}
+.toast.error{background:var(--r800);}
+
+/* ── VIDEO PLAYER ── */
+.video-container{background:#000;border-radius:var(--rad);overflow:hidden;aspect-ratio:16/9;position:relative;}
+.video-container video{width:100%;height:100%;}
+.video-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);cursor:pointer;transition:opacity 0.2s;}
+.video-play-btn{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:22px;}
+
+/* ── CONTENT VIEWER ── */
+.content-page{max-width:760px;}
+.content-text{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);padding:2rem;font-size:15px;line-height:1.8;color:var(--text);}
+.content-text h2{font-family:'Fraunces',serif;font-size:1.4rem;margin:1.5rem 0 0.5rem;}
+.fact-box{background:var(--t50);border:0.5px solid var(--t100);border-radius:var(--rad-sm);padding:1rem 1.25rem;margin:1rem 0;display:flex;gap:10px;font-size:13px;color:var(--t800);}
+
+/* ── ASSIGNMENT SUBMIT ── */
+.assign-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad);padding:1.5rem;margin-bottom:1rem;}
+.assign-card h3{font-size:15px;font-weight:600;margin-bottom:4px;}
+.assign-card .desc{font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
+.status-chip{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+
+/* ── LEADERBOARD ── */
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border);}
+.lb-rank{width:30px;text-align:center;font-family:'Fraunces',serif;font-size:1.1rem;font-weight:500;color:var(--muted);}
+.lb-rank.gold{color:#F9A825;}
+.lb-rank.silver{color:#90A4AE;}
+.lb-rank.bronze{color:#A1887F;}
+
+/* ── ADMIN ── */
+.admin-header{background:linear-gradient(135deg,#1C2B1C,var(--g800));border-radius:var(--rad);padding:1.75rem;color:#fff;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.admin-header h1{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:500;}
+
+/* ── QUIZ BUILDER ── */
+.qbuilder-q{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--rad-sm);padding:1rem;margin-bottom:10px;}
+.qbuilder-q .qb-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.qb-num{width:24px;height:24px;border-radius:50%;background:var(--t400);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.opt-builder{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.opt-builder input[type=text]{flex:1;}
+.opt-builder input[type=checkbox]{width:15px;height:15px;cursor:pointer;}
+
+/* ── IMAGE GALLERY ── */
+.img-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:1rem;}
+.img-thumb{aspect-ratio:1;border-radius:8px;overflow:hidden;border:0.5px solid var(--border);cursor:pointer;}
+.img-thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s;}
+.img-thumb:hover img{transform:scale(1.05);}
+
+/* ── LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:400;display:none;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;object-fit:contain;}
+.lightbox-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .grid-stats{grid-template-columns:1fr 1fr;}
+  .content{padding:1rem;}
+}
+@media(max-width:600px){
+  .grid-stats{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}
+}
+
+/* ── SECTION TABS ── */
+.sec-tabs{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--bg);border-radius:var(--rad-sm);padding:3px;}
+.sec-tab{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--muted);font-family:'Sora',sans-serif;transition:all 0.15s;}
+.sec-tab.active{background:var(--card);color:var(--text);box-shadow:var(--shadow);}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-mark">🌿</div>
+      <span>EcoLearn</span>
+    </div>
+    <h2 class="auth-title">Welcome back</h2>
+    <p class="auth-sub">Sign in to continue your sustainability journey</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="setAuthTab('login',this)">Sign In</button>
+      <button class="auth-tab" onclick="setAuthTab('register',this)">Create Account</button>
+    </div>
+    <div id="authForm">
+      <div class="form-group" id="nameGroup" style="display:none">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="authName" placeholder="Your full name" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="authEmail" placeholder="you@email.com" type="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="authPass" placeholder="••••••••" type="password">
+      </div>
+      <button class="btn btn-teal btn-full" style="margin-top:0.5rem" onclick="doAuth()" id="authBtn">Sign In</button>
+      <p style="text-align:center;margin-top:1rem;font-size:12px;color:var(--muted);">
+        Demo — Admin: <b>admin@ecolearn.com</b> · Student: <b>student@ecolearn.com</b><br>Password: <b>Admin@123</b>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo" onclick="navigate('home')">
+      <div class="logo-mark">🌿</div>
+      EcoLearn
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" placeholder="Search modules, quizzes, assignments..." oninput="doSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <div class="topbar-right">
+      <div class="pts-badge" id="topPts">0 pts</div>
+      <div class="avatar" id="topAvatar" onclick="navigate('profile')"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section">
+        <div class="nav-label">Learn</div>
+        <div class="nav-item" onclick="navigate('home')" data-page="home"><span class="ni">🏠</span>Home</div>
+        <div class="nav-item" onclick="navigate('modules')" data-page="modules"><span class="ni">📚</span>Modules</div>
+        <div class="nav-item" onclick="navigate('quizzes')" data-page="quizzes"><span class="ni">✏️</span>Quizzes</div>
+        <div class="nav-item" onclick="navigate('assignments')" data-page="assignments"><span class="ni">📋</span>Assignments</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Community</div>
+        <div class="nav-item" onclick="navigate('leaderboard')" data-page="leaderboard"><span class="ni">🏆</span>Leaderboard</div>
+      </div>
+      <div class="nav-section" id="adminNav" style="display:none">
+        <div class="nav-label">Admin</div>
+        <div class="nav-item" onclick="navigate('admin-modules')" data-page="admin-modules"><span class="ni">🗂️</span>Manage Modules</div>
+        <div class="nav-item" onclick="navigate('admin-quizzes')" data-page="admin-quizzes"><span class="ni">📝</span>Manage Quizzes</div>
+        <div class="nav-item" onclick="navigate('admin-assignments')" data-page="admin-assignments"><span class="ni">📌</span>Manage Assignments</div>
+        <div class="nav-item" onclick="navigate('admin-users')" data-page="admin-users"><span class="ni">👥</span>Users</div>
+        <div class="nav-item" onclick="navigate('admin-analytics')" data-page="admin-analytics"><span class="ni">📊</span>Analytics</div>
+      </div>
+      <div style="margin-top:auto;padding:0.75rem;">
+        <div class="nav-item" onclick="navigate('profile')" data-page="profile"><span class="ni">👤</span>My Profile</div>
+        <div class="nav-item" onclick="logout()" style="color:var(--r400);"><span class="ni">🚪</span>Sign Out</div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="content">
+
+      <!-- HOME -->
+      <div class="page" id="page-home">
+        <div id="homeContent"></div>
+      </div>
+
+      <!-- MODULES LIST -->
+      <div class="page" id="page-modules">
+        <div class="page-header">
+          <h1 class="page-title">Modules</h1>
+          <p class="page-sub">Complete modules to earn points and track your sustainability learning</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;" id="topicFilters"></div>
+        <div class="grid-3" id="modulesGrid"></div>
+      </div>
+
+      <!-- MODULE DETAIL -->
+      <div class="page" id="page-module-detail">
+        <div id="moduleDetailContent"></div>
+      </div>
+
+      <!-- QUIZZES -->
+      <div class="page" id="page-quizzes">
+        <div class="page-header">
+          <h1 class="page-title">Quizzes</h1>
+          <p class="page-sub">Test your knowledge and earn eco points</p>
+        </div>
+        <div class="grid-2" id="quizzesGrid"></div>
+      </div>
+
+      <!-- QUIZ TAKE -->
+      <div class="page" id="page-quiz-take">
+        <div id="quizTakeContent"></div>
+      </div>
+
+      <!-- ASSIGNMENTS -->
+      <div class="page" id="page-assignments">
+        <div class="page-header">
+          <h1 class="page-title">Assignments</h1>
+          <p class="page-sub">Submit your work and get feedback from educators</p>
+        </div>
+        <div id="assignmentsContent"></div>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <div class="page" id="page-leaderboard">
+        <div class="page-header">
+          <h1 class="page-title">Leaderboard</h1>
+          <p class="page-sub">Top eco learners worldwide</p>
+        </div>
+        <div style="max-width:600px;" id="leaderboardContent"></div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="page" id="page-profile">
+        <div id="profileContent"></div>
+      </div>
+
+      <!-- ADMIN: MODULES -->
+      <div class="page" id="page-admin-modules">
+        <div id="adminModulesContent"></div>
+      </div>
+
+      <!-- ADMIN: QUIZZES -->
+      <div class="page" id="page-admin-quizzes">
+        <div id="adminQuizzesContent"></div>
+      </div>
+
+      <!-- ADMIN: ASSIGNMENTS -->
+      <div class="page" id="page-admin-assignments">
+        <div id="adminAssignContent"></div>
+      </div>
+
+      <!-- ADMIN: USERS -->
+      <div class="page" id="page-admin-users">
+        <div id="adminUsersContent"></div>
+      </div>
+
+      <!-- ADMIN: ANALYTICS -->
+      <div class="page" id="page-admin-analytics">
+        <div id="adminAnalyticsContent"></div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODALS (rendered dynamically) -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  CONFIG & STATE
+// ═══════════════════════════════════════════════════════════
+const API = '/api';
+let token = localStorage.getItem('eco_token');
+let currentUser = null;
+let currentPage = 'home';
+let activeQuiz = null;
+let quizAnswers = {};
+let activeModule = null;
+
+// ═══════════════════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════════════════
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  clearTimeout(t._t); t._t = setTimeout(() => t.className='toast', 2800);
+}
+
+function openModal() { document.getElementById('modalBg').classList.add('open'); }
+function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+function setModal(html, wide=false) {
+  const b = document.getElementById('modalBox');
+  b.className = 'modal' + (wide ? ' modal-wide' : '');
+  b.innerHTML = html; openModal();
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+async function api(method, path, body, isForm=false) {
+  const opts = { method, headers: { Authorization: `Bearer ${token}` } };
+  if (body) {
+    if (isForm) { opts.body = body; }
+    else { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  }
+  try {
+    const r = await fetch(API + path, opts);
+    const contentType = r.headers.get('Content-Type') || '';
+    const data = contentType.includes('application/json') ? await r.json() : {};
+    if (!r.ok) throw new Error(data.error || `${r.status} ${r.statusText}` || 'Request failed');
+    return data;
+  } catch (err) {
+    if (err.message === 'Failed to fetch' || err.message.includes('network')) {
+      throw new Error('Unable to contact server. Make sure the backend is running and accessible.');
+    }
+    throw err;
+  }
+}
+
+function fmt(n) { return Number(n||0).toLocaleString(); }
+function ago(d) {
+  if (!d) return '';
+  const s = (Date.now() - new Date(d)) / 1000;
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+const TOPIC_COLORS = { energy:'tag-amber', waste:'tag-green', diet:'tag-teal', water:'tag-blue', biodiversity:'tag-green', cities:'tag-gray', other:'tag-gray' };
+const TOPIC_ICONS = { energy:'⚡', waste:'♻️', diet:'🌱', water:'💧', biodiversity:'🌳', cities:'🏙️', other:'📂' };
+const LEVEL_COLORS = { Beginner:'tag-green', Intermediate:'tag-amber', Advanced:'tag-coral' };
+
+// ═══════════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════════
+let authMode = 'login';
+function setAuthTab(mode, el) {
+  authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('nameGroup').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('authBtn').textContent = mode === 'register' ? 'Create Account' : 'Sign In';
+}
+
+async function doAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPass').value;
+  const name = document.getElementById('authName')?.value.trim();
+  if (!email || !password) return toast('Please fill all fields', 'error');
+  try {
+    let data;
+    if (authMode === 'register') {
+      if (!name) return toast('Name required', 'error');
+      data = await api('POST', '/auth/register', { name, email, password });
+    } else {
+      data = await api('POST', '/auth/login', { email, password });
+    }
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('eco_token', token);
+    initApp();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function logout() {
+  token = null; currentUser = null;
+  localStorage.removeItem('eco_token');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll(`[data-page="${page}"]`).forEach(n => n.classList.add('active'));
+  currentPage = page;
+  loadPage(page);
+  window.scrollTo(0, 0);
+}
+
+async function loadPage(page) {
+  try {
+    // Block non-admins from accessing admin pages
+    if (page.startsWith('admin-') && currentUser.role !== 'admin') {
+      toast('Admin access denied', 'error');
+      navigate('home');
+      return;
+    }
+    if (page === 'home') await renderHome();
+    else if (page === 'modules') await renderModules();
+    else if (page === 'quizzes') await renderQuizzes();
+    else if (page === 'assignments') await renderAssignments();
+    else if (page === 'leaderboard') await renderLeaderboard();
+    else if (page === 'profile') await renderProfile();
+    else if (page === 'admin-modules') await renderAdminModules();
+    else if (page === 'admin-quizzes') await renderAdminQuizzes();
+    else if (page === 'admin-assignments') await renderAdminAssignments();
+    else if (page === 'admin-users') await renderAdminUsers();
+    else if (page === 'admin-analytics') await renderAdminAnalytics();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  APP INIT
+// ═══════════════════════════════════════════════════════════
+async function initApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  if (!currentUser) {
+    try { currentUser = await api('GET', '/auth/me'); } catch { logout(); return; }
+  }
+  updateTopbar();
+  if (currentUser.role === 'admin') document.getElementById('adminNav').style.display = 'block';
+  navigate('home');
+}
+
+function updateTopbar() {
+  document.getElementById('topPts').textContent = fmt(currentUser.eco_points) + ' pts';
+  const av = document.getElementById('topAvatar');
+  if (currentUser.avatar_url) av.innerHTML = `<img src="${currentUser.avatar_url}" alt="">`;
+  else av.textContent = (currentUser.name||'U').charAt(0).toUpperCase();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════════════════════════
+let searchTimer;
+async function doSearch(q) {
+  clearTimeout(searchTimer);
+  if (q.length < 2) return closeSearch();
+  searchTimer = setTimeout(async () => {
+    try {
+      const data = await api('GET', `/search?q=${encodeURIComponent(q)}`);
+      renderSearchResults(data);
+    } catch {}
+  }, 300);
+}
+
+function renderSearchResults(data) {
+  const el = document.getElementById('searchResults');
+  const all = [
+    ...(data.modules||[]).map(m => ({...m, _type:'Module'})),
+    ...(data.quizzes||[]).map(m => ({...m, _type:'Quiz'})),
+    ...(data.assignments||[]).map(m => ({...m, _type:'Assignment'})),
+  ];
+  if (!all.length) { el.innerHTML = '<div style="padding:1rem;text-align:center;font-size:13px;color:var(--muted);">No results found</div>'; el.classList.add('open'); return; }
+  el.innerHTML = all.map(r => `
+    <div class="sr-item" onclick="searchGo('${r.type}','${r.id}')">
+      <span class="sr-type tag tag-${r.type==='module'?'teal':r.type==='quiz'?'amber':'blue'}">${r._type}</span>
+      <span>${r.title}</span>
+    </div>
+  `).join('');
+  el.classList.add('open');
+}
+
+function closeSearch() { document.getElementById('searchResults').classList.remove('open'); }
+function searchGo(type, id) {
+  closeSearch();
+  document.getElementById('searchInput').value = '';
+  if (type === 'module') openModule(id);
+  else if (type === 'quiz') openQuiz(id);
+  else navigate('assignments');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HOME PAGE
+// ═══════════════════════════════════════════════════════════
+async function renderHome() {
+  const [modules, quizzes] = await Promise.all([
+    api('GET', '/modules'),
+    api('GET', '/quizzes')
+  ]);
+  const done = modules.filter(m => m.my_completed).length;
+  const inProg = modules.filter(m => m.my_progress > 0 && !m.my_completed).length;
+  const isAdmin = currentUser.role === 'admin';
+  document.getElementById('homeContent').innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.75rem;">
+      <div>
+        <h1 class="page-title serif">Good to see you, ${currentUser.name.split(' ')[0]} 🌿</h1>
+        <p class="page-sub">${isAdmin ? 'Admin Dashboard — manage content and track student progress' : 'Continue your sustainability learning journey'}</p>
+      </div>
+      ${isAdmin ? `<button class="btn btn-green" onclick="navigate('admin-modules')">+ New Module</button>` : ''}
+    </div>
+    <div class="grid-stats">
+      <div class="stat-card"><div class="stat-label">Eco Points</div><div class="stat-val" style="color:var(--g600)">${fmt(currentUser.eco_points)}</div><div class="stat-sub">lifetime earned</div></div>
+      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-val" style="color:var(--t600)">${done}</div><div class="stat-sub">modules finished</div></div>
+      <div class="stat-card"><div class="stat-label">In Progress</div><div class="stat-val" style="color:var(--a400)">${inProg}</div><div class="stat-sub">modules started</div></div>
+      <div class="stat-card"><div class="stat-label">Quizzes</div><div class="stat-val" style="color:var(--b600)">${quizzes.filter(q=>q.my_last_score!=null).length}</div><div class="stat-sub">attempted</div></div>
+    </div>
+    ${inProg > 0 ? `
+    <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;margin-bottom:1rem;">Continue Learning</h3>
+    <div class="grid-3" style="margin-bottom:1.75rem;">
+      ${modules.filter(m=>m.my_progress>0&&!m.my_completed).slice(0,3).map(m=>moduleCard(m)).join('')}
+    </div>` : ''}
+    <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;margin-bottom:1rem;">${isAdmin?'All Modules':'Latest Modules'}</h3>
+    <div class="grid-3">
+      ${modules.slice(0,6).map(m=>moduleCard(m)).join('')}
+    </div>
+    ${modules.length > 6 ? `<div style="text-align:center;margin-top:1.25rem;"><button class="btn btn-ghost" onclick="navigate('modules')">View all ${modules.length} modules →</button></div>` : ''}
+  `;
+}
+
+function moduleCard(m) {
+  const pct = Math.round(m.my_progress || 0);
+  const done = m.my_completed;
+  return `
+    <div class="mod-card" onclick="openModule(${m.id})">
+      <div class="mod-thumb">
+        ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${m.title}"><div class="mod-thumb-overlay"></div>` : `<span style="font-size:3rem;">${TOPIC_ICONS[m.topic]||'📚'}</span>`}
+        ${!m.is_published ? `<span style="position:absolute;top:8px;right:8px;" class="tag tag-amber">Draft</span>` : ''}
+        ${done ? `<span style="position:absolute;top:8px;left:8px;background:var(--g400);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;">✓</span>` : ''}
+      </div>
+      <div class="mod-body">
+        <div class="mod-meta">
+          <span class="tag ${TOPIC_COLORS[m.topic]||'tag-gray'}">${m.topic}</span>
+          <span class="tag ${LEVEL_COLORS[m.level]||'tag-gray'}">${m.level}</span>
+        </div>
+        <div class="mod-title">${m.title}</div>
+        <div class="mod-desc">${m.description||''}</div>
+        <div class="mod-footer">
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
+              <span>${m.item_count||0} items</span><span>${pct}%</span>
+            </div>
+            <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${done?'var(--g400)':'var(--t400)'}"></div></div>
+          </div>
+          <div style="margin-left:10px;font-size:11px;font-weight:600;color:var(--g600);">+${m.points_reward}pts</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MODULES PAGE
+// ═══════════════════════════════════════════════════════════
+let activeTopicFilter = 'all';
+async function renderModules() {
+  const modules = await api('GET', `/modules${activeTopicFilter!=='all'?`?topic=${activeTopicFilter}`:''}`);
+  const topics = ['all','energy','waste','diet','water','biodiversity','cities','other'];
+  document.getElementById('topicFilters').innerHTML = topics.map(t => `
+    <button class="btn btn-sm ${activeTopicFilter===t?'btn-teal':'btn-ghost'}" onclick="setTopicFilter('${t}')">${t==='all'?'All Topics':(TOPIC_ICONS[t]||'')+ ' '+t.charAt(0).toUpperCase()+t.slice(1)}</button>
+  `).join('');
+  document.getElementById('modulesGrid').innerHTML = modules.length
+    ? modules.map(m => moduleCard(m)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No modules found</div>`;
+}
+function setTopicFilter(t) { activeTopicFilter = t; renderModules(); }
+
+// ═══════════════════════════════════════════════════════════
+//  MODULE DETAIL
+// ═══════════════════════════════════════════════════════════
+async function openModule(id) {
+  navigate('module-detail');
+  const m = await api('GET', `/modules/${id}`);
+  activeModule = m;
+  const pct = Math.round(m.my_progress || 0);
+  document.getElementById('moduleDetailContent').innerHTML = `
+    <button class="btn btn-ghost btn-sm" style="margin-bottom:1rem" onclick="navigate('modules')">← Back to Modules</button>
+    <div class="mod-detail-hero">
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <span class="tag ${TOPIC_COLORS[m.topic]||'tag-gray'}">${m.topic}</span>
+        <span class="tag ${LEVEL_COLORS[m.level]||'tag-gray'}">${m.level}</span>
+        ${!m.is_published?'<span class="tag tag-amber">Draft</span>':''}
+      </div>
+      <h1>${m.title}</h1>
+      <p>${m.description||''}</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><span>Overall Progress</span><span>${pct}%</span></div>
+          <div style="background:rgba(255,255,255,0.2);border-radius:100px;height:6px;"><div style="width:${pct}%;height:6px;border-radius:100px;background:#fff;transition:width 0.5s;"></div></div>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.7);">${m.item_count||0} items · +${m.points_reward} pts</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr${m.quizzes&&m.quizzes.length?'':''};gap:1.5rem;">
+      <div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:10px;">Content Items</h3>
+        <div class="items-list" id="itemsList">
+          ${(m.items||[]).length ? m.items.map((item,i) => itemRow(item, i, m.id)).join('') : '<div style="color:var(--muted);font-size:13px;padding:1rem 0;">No items in this module yet.</div>'}
+        </div>
+      </div>
+    </div>
+    ${m.quizzes&&m.quizzes.length ? `
+    <div style="margin-top:1.5rem;">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:10px;">Module Quizzes</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${m.quizzes.map(q => `
+          <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rad-sm);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.2rem;">✏️</span><span style="font-size:14px;font-weight:500;">${q.title}</span></div>
+            <button class="btn btn-teal btn-sm" onclick="openQuiz(${q.id})">Take Quiz</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function itemRow(item, i, moduleId) {
+  const icons = { video:'🎬', image:'🖼️', text:'📄', link:'🔗' };
+  const done = item.done;
+  return `
+    <div class="item-row ${done?'done':''}" onclick="openItem(${JSON.stringify(item).replace(/"/g,'&quot;')}, ${moduleId})">
+      <div class="item-icon" style="background:var(--${done?'g':'t'}50)">${icons[item.type]||'📄'}</div>
+      <div class="item-info">
+        <div class="item-title">${item.title}</div>
+        <div class="item-meta">${item.type.charAt(0).toUpperCase()+item.type.slice(1)}${item.duration_seconds?` · ${Math.floor(item.duration_seconds/60)}min`:''}</div>
+      </div>
+      ${done ? '<div style="color:var(--g400);font-size:18px;">✓</div>' : '<div style="width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;"></div>'}
+    </div>`;
+}
+
+function openItem(item, moduleId) {
+  let bodyHtml = '';
+  if (item.type === 'text') {
+    bodyHtml = `
+      <div class="content-text">
+        <h2>${item.title}</h2>
+        <p style="margin-top:1rem;">${(item.content||'').replace(/\n/g,'<br>')}</p>
+      </div>`;
+  } else if (item.type === 'video') {
+    bodyHtml = `
+      <div class="video-container">
+        <video id="modVideo" controls onended="markItemDone(${item.id},${moduleId},true)" ontimeupdate="trackVideo(${item.id},${moduleId},this)">
+          <source src="${item.file_url||''}" type="video/mp4">
+          Your browser does not support video.
+        </video>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">Watch the full video — it will be marked complete automatically.</p>`;
+  } else if (item.type === 'image') {
+    const imgs = item.file_url ? [item.file_url] : [];
+    bodyHtml = `
+      <div class="img-gallery">
+        ${imgs.map(url=>`<div class="img-thumb" onclick="openLightbox('${url}')"><img src="${url}" alt="${item.title}" loading="lazy"></div>`).join('')}
+        ${!imgs.length ? `<div style="color:var(--muted);font-size:13px;">No image uploaded yet.</div>` : ''}
+      </div>`;
+  } else if (item.type === 'link') {
+    bodyHtml = `<div class="content-text"><p>${item.content||''}</p>${item.file_url?`<a href="${item.file_url}" target="_blank" style="color:var(--t600);">${item.file_url}</a>`:''}</div>`;
+  }
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">${item.title}</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    ${bodyHtml}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;">
+      <span style="font-size:12px;color:var(--muted);">${item.done?'✓ Completed':'Mark as complete when done'}</span>
+      ${!item.done ? `<button class="btn btn-green" onclick="markItemDone(${item.id},${moduleId},false)">✓ Mark Complete</button>` : `<span style="color:var(--g600);font-weight:600;">✓ Done</span>`}
+    </div>
+  `, true);
+}
+
+let videoTrackTimer;
+function trackVideo(itemId, moduleId, el) {
+  clearTimeout(videoTrackTimer);
+  videoTrackTimer = setTimeout(() => {
+    const pct = el.duration > 0 ? el.currentTime / el.duration : 0;
+    if (pct >= 0.9) markItemDone(itemId, moduleId, true);
+  }, 2000);
+}
+
+async function markItemDone(itemId, moduleId, auto) {
+  try {
+    await api('POST', `/modules/${moduleId}/items/${itemId}/complete`, { watch_seconds: 0 });
+    closeModal();
+    toast('Item marked complete! ✓', 'success');
+    await openModule(moduleId);
+    const user = await api('GET', '/auth/me');
+    currentUser.eco_points = user.eco_points;
+    updateTopbar();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  QUIZZES
+// ═══════════════════════════════════════════════════════════
+async function renderQuizzes() {
+  const quizzes = await api('GET', '/quizzes');
+  document.getElementById('quizzesGrid').innerHTML = quizzes.length
+    ? quizzes.map(q => `
+      <div class="card card-hover" onclick="openQuiz(${q.id})">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div style="font-size:2rem;">✏️</div>
+          ${q.my_last_score!=null?`<span class="tag ${q.my_last_score>=q.pass_score_percent?'tag-green':'tag-red'}">${Math.round(q.my_last_score)}%</span>`:'<span class="tag tag-gray">Not taken</span>'}
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">${q.title}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">${q.module_title?`Module: ${q.module_title}`:''}</div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding-top:10px;border-top:0.5px solid var(--border);">
+          <span>${q.question_count||0} questions</span>
+          <span>Pass: ${q.pass_score_percent}%</span>
+        </div>
+      </div>
+    `).join('')
+    : '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No quizzes available yet</div>';
+}
+
+async function openQuiz(id) {
+  navigate('quiz-take');
+  quizAnswers = {};
+  const quiz = await api('GET', `/quizzes/${id}`);
+  activeQuiz = quiz;
+  renderQuizTake(quiz);
+}
+
+function renderQuizTake(quiz) {
+  let html = `
+    <button class="btn btn-ghost btn-sm" style="margin-bottom:1rem" onclick="navigate('quizzes')">← Back to Quizzes</button>
+    <div style="background:linear-gradient(135deg,var(--t800),var(--t600));border-radius:var(--rad);padding:1.5rem;color:#fff;margin-bottom:1.5rem;">
+      <h1 style="font-family:'Fraunces',serif;font-size:1.5rem;margin-bottom:4px;">${quiz.title}</h1>
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;">${quiz.description||''} · ${quiz.questions?.length||0} questions · Pass: ${quiz.pass_score_percent}%</p>
+    </div>
+    <div id="quizQuestions">
+  `;
+  (quiz.questions||[]).forEach((q, i) => {
+    html += `
+      <div class="quiz-q" id="qq-${q.id}">
+        <div class="quiz-q-num">Question ${i+1} of ${quiz.questions.length} · ${q.points} pts</div>
+        <div class="quiz-q-text">${q.question_text}</div>
+    `;
+    if (q.question_type === 'mcq' || q.question_type === 'multi') {
+      (q.options||[]).forEach(o => {
+        html += `<div class="opt" id="opt-${o.id}" onclick="selectOpt(${q.id},${o.id},${quiz.id})">
+          <div class="opt-dot"></div>${o.option_text}
+        </div>`;
+      });
+    } else if (q.question_type === 'short_answer') {
+      html += `<textarea class="form-input form-textarea" placeholder="Type your answer..." onchange="quizAnswers[${q.id}]={question_id:${q.id},text_answer:this.value}"></textarea>`;
+    } else if (q.question_type === 'file_upload') {
+      html += `<div class="upload-zone" onclick="document.getElementById('qa_file_${q.id}').click()">
+        <input type="file" id="qa_file_${q.id}" onchange="handleAnswerFile(${q.id},this)">
+        <div class="upload-icon">📎</div>
+        <div class="upload-text">Click to upload your answer file</div>
+        <div id="qa_prev_${q.id}"></div>
+      </div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:1.5rem;">
+      <button class="btn btn-teal" onclick="submitQuiz(${quiz.id})">Submit Quiz →</button>
+    </div>`;
+  document.getElementById('quizTakeContent').innerHTML = html;
+}
+
+function selectOpt(qId, optId, quizId) {
+  // Deselect all opts for this question
+  const qq = document.getElementById('qq-' + qId);
+  qq.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('opt-' + optId).classList.add('selected');
+  quizAnswers[qId] = { question_id: qId, selected_option_id: optId };
+}
+
+async function handleAnswerFile(qId, input) {
+  const file = input.files[0]; if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  // store for submission - will use text fallback
+  quizAnswers[qId] = { question_id: qId, text_answer: `[File: ${file.name}]` };
+  document.getElementById(`qa_prev_${qId}`).innerHTML = `<div class="upload-preview"><span>📎 ${file.name}</span></div>`;
+}
+
+async function submitQuiz(quizId) {
+  const answers = Object.values(quizAnswers);
+  if (!answers.length && activeQuiz.questions?.length) {
+    if (!confirm('You haven\'t answered any questions. Submit anyway?')) return;
+  }
+  try {
+    const result = await api('POST', `/quizzes/${quizId}/submit`, { answers });
+    showQuizResult(result);
+    currentUser.eco_points += result.earned_points || 0;
+    updateTopbar();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function showQuizResult(result) {
+  const passed = result.passed;
+  setModal(`
+    <div style="text-align:center;padding:1rem 0;">
+      <div style="font-size:3.5rem;margin-bottom:12px;">${passed?'🎉':'😔'}</div>
+      <h2 class="modal-title" style="margin-bottom:6px;">${passed?'Quiz Passed!':'Try Again'}</h2>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">${passed?`Great work! You earned ${result.earned_points} eco points.`:'Keep learning and try again!'}</p>
+      <div style="background:${passed?'var(--g50)':'var(--r50)'};border-radius:var(--rad);padding:1.5rem;margin-bottom:1.5rem;">
+        <div style="font-family:'Fraunces',serif;font-size:3rem;font-weight:500;color:${passed?'var(--g800)':'var(--r800)'};">${Math.round(result.score_percent)}%</div>
+        <div style="font-size:13px;color:var(--muted);">${result.earned_points} / ${result.total_points} points</div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button class="btn btn-ghost" onclick="closeModal();navigate('quizzes')">All Quizzes</button>
+        ${passed?`<button class="btn btn-teal" onclick="closeModal()">Continue</button>`:`<button class="btn btn-teal" onclick="closeModal();openQuiz(${activeQuiz.id})">Retry</button>`}
+      </div>
+    </div>
+  `);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ASSIGNMENTS
+// ═══════════════════════════════════════════════════════════
+async function renderAssignments() {
+  const assigns = await api('GET', '/assignments');
+  const statusColor = { submitted:'tag-blue', graded:'tag-green', returned:'tag-teal' };
+  document.getElementById('assignmentsContent').innerHTML = assigns.length
+    ? assigns.map(a => `
+      <div class="assign-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+          <div style="flex:1">
+            <h3>${a.title}</h3>
+            <div class="desc">${a.description||''}</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              ${a.module_title?`<span class="tag tag-teal">${a.module_title}</span>`:''}
+              ${a.due_date?`<span class="tag tag-amber">Due: ${new Date(a.due_date).toLocaleDateString()}</span>`:''}
+              <span class="tag tag-gray">Max Score: ${a.max_score}</span>
+              ${a.my_status?`<span class="tag ${statusColor[a.my_status]||'tag-gray'}">${a.my_status}</span>`:''}
+              ${a.my_score!=null?`<span class="tag tag-green">Score: ${a.my_score}/${a.max_score}</span>`:''}
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-direction:column;align-items:flex-end;">
+            <button class="btn btn-teal btn-sm" onclick="openSubmitAssignment(${a.id},'${(a.title||'').replace(/'/g,'\\\'')}')">${a.my_status?'Resubmit':'Submit'}</button>
+          </div>
+        </div>
+      </div>
+    `).join('')
+    : '<div style="text-align:center;padding:3rem;color:var(--muted)">No assignments yet</div>';
+}
+
+function openSubmitAssignment(id, title) {
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Submit Assignment</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.25rem;">${title}</p>
+    <div class="form-group">
+      <label class="form-label">Written Response</label>
+      <textarea class="form-textarea" id="assignText" placeholder="Type your response here..." style="min-height:120px;"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Upload File (Optional)</label>
+      <div class="upload-zone" onclick="document.getElementById('assignFile').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleAssignDrop(event,${id})">
+        <input type="file" id="assignFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.zip" onchange="previewAssignFile(this)">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Drag & drop or click to upload<br><span style="font-size:11px;">PDF, Word, Images, Video, ZIP up to 50MB</span></div>
+        <div id="assignPreview"></div>
+      </div>
+    </div>
+    <button class="btn btn-teal btn-full" onclick="submitAssignment(${id})">Submit Assignment</button>
+  `);
+}
+
+function previewAssignFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const prev = document.getElementById('assignPreview');
+  const isImg = file.type.startsWith('image/');
+  prev.innerHTML = `<div class="upload-preview">${isImg?`<img src="${URL.createObjectURL(file)}" alt="">`:''}<span>📎 ${file.name} (${(file.size/1024/1024).toFixed(1)}MB)</span></div>`;
+}
+
+function handleAssignDrop(e, id) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) { document.getElementById('assignFile').files = e.dataTransfer.files; previewAssignFile({files:[file]}); }
+}
+
+async function submitAssignment(id) {
+  const text = document.getElementById('assignText').value;
+  const file = document.getElementById('assignFile').files[0];
+  if (!text.trim() && !file) return toast('Please provide a response or upload a file', 'error');
+  const fd = new FormData();
+  if (text) fd.append('text_response', text);
+  if (file) fd.append('file', file);
+  try {
+    await api('POST', `/assignments/${id}/submit`, fd, true);
+    closeModal();
+    toast('Assignment submitted! ✓', 'success');
+    await renderAssignments();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  LEADERBOARD
+// ═══════════════════════════════════════════════════════════
+async function renderLeaderboard() {
+  const data = await api('GET', '/leaderboard');
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('leaderboardContent').innerHTML = `
+    <div class="table-wrap">
+      ${data.map((u,i) => `
+        <div class="lb-row" style="${u.id===currentUser.id?'background:var(--t50);':''};padding:12px 16px;">
+          <div class="lb-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i<3?medals[i]:i+1}</div>
+          <div class="avatar" style="background:hsl(${i*47},45%,48%);width:36px;height:36px;">
+            ${u.avatar_url?`<img src="${u.avatar_url}" alt="">`:(u.name||'U').charAt(0)}
+          </div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:${u.id===currentUser.id?'600':'400'};">${u.name} ${u.id===currentUser.id?'(You)':''}</div>
+            <div style="font-size:11px;color:var(--muted);">${u.modules_done||0} modules completed</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--g800);">${fmt(u.eco_points)}</div>
+            <div style="font-size:10px;color:var(--muted);">pts</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PROFILE
+// ═══════════════════════════════════════════════════════════
+async function renderProfile() {
+  const user = await api('GET', '/auth/me');
+  currentUser = { ...currentUser, ...user };
+  updateTopbar();
+  document.getElementById('profileContent').innerHTML = `
+    <div class="page-header"><h1 class="page-title">My Profile</h1></div>
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:1.5rem;flex-wrap:wrap;">
+      <div>
+        <div class="card" style="text-align:center;">
+          <div style="position:relative;width:80px;margin:0 auto 1rem;">
+            <div class="avatar" style="width:80px;height:80px;font-size:2rem;cursor:pointer;" onclick="document.getElementById('avatarInput').click()">
+              ${user.avatar_url?`<img src="${user.avatar_url}" alt="">`:(user.name||'U').charAt(0)}
+            </div>
+            <div style="position:absolute;bottom:0;right:-4px;width:24px;height:24px;background:var(--t400);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;" onclick="document.getElementById('avatarInput').click()">✏️</div>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+          <div style="font-size:16px;font-weight:600;">${user.name}</div>
+          <div style="font-size:13px;color:var(--muted);">${user.email}</div>
+          <div style="margin-top:8px;"><span class="tag ${user.role==='admin'?'tag-red':'tag-teal'}">${user.role}</span></div>
+          <div style="margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border);">
+            <div style="font-family:'Fraunces',serif;font-size:2rem;color:var(--g600);">${fmt(user.eco_points)}</div>
+            <div style="font-size:12px;color:var(--muted);">Eco Points Earned</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;margin-bottom:1.25rem;">Account Details</h3>
+          <div style="display:grid;gap:12px;">
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Full Name</div><div style="font-size:14px;">${user.name}</div></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Email</div><div style="font-size:14px;">${user.email}</div></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Role</div><div style="font-size:14px;">${user.role}</div></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Member Since</div><div style="font-size:14px;">${new Date(user.created_at).toLocaleDateString()}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function uploadAvatar(input) {
+  const file = input.files[0]; if (!file) return;
+  const fd = new FormData(); fd.append('avatar', file);
+  try {
+    const r = await api('POST', '/auth/avatar', fd, true);
+    currentUser.avatar_url = r.avatar_url;
+    updateTopbar();
+    toast('Avatar updated!', 'success');
+    renderProfile();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN: MODULES
+// ═══════════════════════════════════════════════════════════
+async function renderAdminModules() {
+  const modules = await api('GET', '/modules');
+  document.getElementById('adminModulesContent').innerHTML = `
+    <div class="admin-header">
+      <div><h1>Manage Modules</h1><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">${modules.length} total modules</p></div>
+      <button class="btn btn-teal" onclick="openCreateModule()">+ New Module</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Topic</th><th>Level</th><th>Items</th><th>Points</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${modules.map(m=>`
+            <tr>
+              <td style="font-weight:500;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.title}</td>
+              <td><span class="tag ${TOPIC_COLORS[m.topic]||'tag-gray'}">${m.topic}</span></td>
+              <td>${m.level}</td>
+              <td>${m.item_count||0}</td>
+              <td style="color:var(--g800);font-weight:600;">+${m.points_reward}</td>
+              <td><span class="tag ${m.is_published?'tag-green':'tag-amber'}">${m.is_published?'Published':'Draft'}</span></td>
+              <td>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button class="btn btn-ghost btn-sm" onclick="openModule(${m.id})">View</button>
+                  <button class="btn btn-ghost btn-sm" onclick="openEditModule(${m.id})">Edit</button>
+                  <button class="btn btn-ghost btn-sm" onclick="openAddItem(${m.id},'${(m.title||'').replace(/'/g,'\\\'')}')"  style="color:var(--t600)">+ Item</button>
+                  <button class="btn btn-ghost btn-sm" onclick="togglePublish(${m.id},${m.is_published?0:1})" style="color:${m.is_published?'var(--a400)':'var(--g600)'};">${m.is_published?'Unpublish':'Publish'}</button>
+                  <button class="btn btn-ghost btn-sm" onclick="deleteModule(${m.id})" style="color:var(--r400);">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openCreateModule() {
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Create New Module</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Module Title *</label>
+      <input class="form-input" id="mTitle" placeholder="e.g. Introduction to Solar Energy">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-textarea" id="mDesc" placeholder="What will students learn?"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Topic</label>
+        <select class="form-select" id="mTopic">
+          <option value="energy">⚡ Energy</option>
+          <option value="waste">♻️ Waste</option>
+          <option value="diet">🌱 Diet</option>
+          <option value="water">💧 Water</option>
+          <option value="biodiversity">🌳 Biodiversity</option>
+          <option value="cities">🏙️ Cities</option>
+          <option value="other">📂 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Level</label>
+        <select class="form-select" id="mLevel">
+          <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Points Reward</label>
+      <input class="form-input" id="mPoints" type="number" value="100" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Thumbnail Image</label>
+      <div class="upload-zone" onclick="document.getElementById('mThumb').click()">
+        <input type="file" id="mThumb" accept="image/*" onchange="previewThumb(this)">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">Upload thumbnail (JPG, PNG, WebP)</div>
+        <div id="thumbPreview"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-green" onclick="createModule()">Create Module</button>
+    </div>
+  `, true);
+}
+
+function previewThumb(input) {
+  const file = input.files[0]; if (!file) return;
+  document.getElementById('thumbPreview').innerHTML = `<div class="upload-preview"><img src="${URL.createObjectURL(file)}" alt=""><span>${file.name}</span></div>`;
+}
+
+async function createModule() {
+  const fd = new FormData();
+  fd.append('title', document.getElementById('mTitle').value);
+  fd.append('description', document.getElementById('mDesc').value);
+  fd.append('topic', document.getElementById('mTopic').value);
+  fd.append('level', document.getElementById('mLevel').value);
+  fd.append('points_reward', document.getElementById('mPoints').value);
+  const thumb = document.getElementById('mThumb').files[0];
+  if (thumb) fd.append('thumbnail', thumb);
+  try {
+    await api('POST', '/modules', fd, true);
+    closeModal(); toast('Module created!', 'success'); await renderAdminModules();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function openEditModule(id) {
+  const m = await api('GET', `/modules/${id}`);
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Module</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="emTitle" value="${m.title||''}"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="emDesc">${m.description||''}</textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Topic</label>
+        <select class="form-select" id="emTopic">
+          ${['energy','waste','diet','water','biodiversity','cities','other'].map(t=>`<option value="${t}" ${m.topic===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Level</label>
+        <select class="form-select" id="emLevel">
+          ${['Beginner','Intermediate','Advanced'].map(l=>`<option ${m.level===l?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Points</label><input class="form-input" id="emPoints" type="number" value="${m.points_reward||100}"></div>
+    <div class="form-group"><label class="form-label">New Thumbnail (optional)</label>
+      <div class="upload-zone" onclick="document.getElementById('emThumb').click()">
+        <input type="file" id="emThumb" accept="image/*" onchange="previewThumb2(this)">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">${m.thumbnail_url?'Replace thumbnail':'Upload thumbnail'}</div>
+        <div id="thumbPreview2">${m.thumbnail_url?`<div class="upload-preview"><img src="${m.thumbnail_url}" alt=""><span>Current</span></div>`:''}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-green" onclick="saveModule(${id})">Save Changes</button>
+    </div>
+  `, true);
+}
+
+function previewThumb2(input) {
+  const file = input.files[0]; if(!file) return;
+  document.getElementById('thumbPreview2').innerHTML = `<div class="upload-preview"><img src="${URL.createObjectURL(file)}" alt=""><span>${file.name}</span></div>`;
+}
+
+async function saveModule(id) {
+  const fd = new FormData();
+  fd.append('title', document.getElementById('emTitle').value);
+  fd.append('description', document.getElementById('emDesc').value);
+  fd.append('topic', document.getElementById('emTopic').value);
+  fd.append('level', document.getElementById('emLevel').value);
+  fd.append('points_reward', document.getElementById('emPoints').value);
+  const thumb = document.getElementById('emThumb').files[0];
+  if (thumb) fd.append('thumbnail', thumb);
+  try {
+    await api('PUT', `/modules/${id}`, fd, true);
+    closeModal(); toast('Module updated!', 'success'); await renderAdminModules();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function togglePublish(id, val) {
+  await api('PUT', `/modules/${id}`, { is_published: val });
+  toast(val ? 'Module published!' : 'Module unpublished', 'success');
+  await renderAdminModules();
+}
+
+async function deleteModule(id) {
+  if (!confirm('Delete this module and all its content? This cannot be undone.')) return;
+  await api('DELETE', `/modules/${id}`);
+  toast('Module deleted', 'success'); await renderAdminModules();
+}
+
+function openAddItem(moduleId, moduleTitle) {
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Add Item to Module</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.25rem;">Adding to: <b>${moduleTitle}</b></p>
+    <div class="form-group"><label class="form-label">Item Type</label>
+      <select class="form-select" id="itemType" onchange="updateItemTypeUI()">
+        <option value="text">📄 Text / Article</option>
+        <option value="video">🎬 Video</option>
+        <option value="image">🖼️ Image</option>
+        <option value="link">🔗 Link / URL</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="itemTitle" placeholder="Item title"></div>
+    <div id="itemTypeFields">
+      <div class="form-group"><label class="form-label">Text Content</label><textarea class="form-textarea" id="itemContent" placeholder="Write the lesson content here..." style="min-height:150px;"></textarea></div>
+    </div>
+    <div class="form-group"><label class="form-label">Order Index</label><input class="form-input" id="itemOrder" type="number" value="1" min="1"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:0.5rem;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-teal" onclick="addModuleItem(${moduleId})">Add Item</button>
+    </div>
+  `, true);
+}
+
+function updateItemTypeUI() {
+  const type = document.getElementById('itemType').value;
+  const f = document.getElementById('itemTypeFields');
+  if (type === 'text') {
+    f.innerHTML = `<div class="form-group"><label class="form-label">Text Content</label><textarea class="form-textarea" id="itemContent" placeholder="Write lesson content..." style="min-height:150px;"></textarea></div>`;
+  } else if (type === 'video') {
+    f.innerHTML = `
+      <div class="form-group"><label class="form-label">Upload Video</label>
+        <div class="upload-zone" onclick="document.getElementById('itemFile').click()">
+          <input type="file" id="itemFile" accept="video/*" onchange="prevItemFile(this)">
+          <div class="upload-icon">🎬</div><div class="upload-text">Upload MP4, WebM, MOV (up to 500MB)</div>
+          <div id="itemFilePrev"></div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Duration (seconds)</label><input class="form-input" id="itemDuration" type="number" placeholder="e.g. 600 for 10 min"></div>`;
+  } else if (type === 'image') {
+    f.innerHTML = `
+      <div class="form-group"><label class="form-label">Upload Image</label>
+        <div class="upload-zone" onclick="document.getElementById('itemFile').click()">
+          <input type="file" id="itemFile" accept="image/*" onchange="prevItemFile(this)">
+          <div class="upload-icon">🖼️</div><div class="upload-text">Upload JPG, PNG, WebP</div>
+          <div id="itemFilePrev"></div>
+        </div>
+      </div>`;
+  } else {
+    f.innerHTML = `
+      <div class="form-group"><label class="form-label">URL / Link</label><input class="form-input" id="itemContent" placeholder="https://..."></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="itemDesc" placeholder="Brief description"></textarea></div>`;
+  }
+}
+
+function prevItemFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const isImg = file.type.startsWith('image/');
+  document.getElementById('itemFilePrev').innerHTML = `<div class="upload-preview">${isImg?`<img src="${URL.createObjectURL(file)}" alt="">`:''}<span>📎 ${file.name} (${(file.size/1024/1024).toFixed(1)}MB)</span></div>`;
+}
+
+async function addModuleItem(moduleId) {
+  const type = document.getElementById('itemType').value;
+  const title = document.getElementById('itemTitle').value;
+  if (!title) return toast('Title required', 'error');
+  const fd = new FormData();
+  fd.append('type', type);
+  fd.append('title', title);
+  fd.append('order_index', document.getElementById('itemOrder').value || 1);
+  if (type === 'text') fd.append('content', document.getElementById('itemContent')?.value || '');
+  if (type === 'link') { fd.append('content', document.getElementById('itemContent')?.value || ''); }
+  if (type === 'video') fd.append('duration_seconds', document.getElementById('itemDuration')?.value || 0);
+  const fileInput = document.getElementById('itemFile');
+  if (fileInput?.files[0]) fd.append('file', fileInput.files[0]);
+  try {
+    await api('POST', `/modules/${moduleId}/items`, fd, true);
+    closeModal(); toast('Item added!', 'success'); await openModule(moduleId); navigate('module-detail');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN: QUIZZES
+// ═══════════════════════════════════════════════════════════
+async function renderAdminQuizzes() {
+  const [quizzes, modules] = await Promise.all([api('GET','/quizzes'), api('GET','/modules')]);
+  document.getElementById('adminQuizzesContent').innerHTML = `
+    <div class="admin-header">
+      <div><h1>Manage Quizzes</h1><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">${quizzes.length} quizzes total</p></div>
+      <button class="btn btn-teal" onclick="openQuizBuilder(${JSON.stringify(modules).replace(/"/g,'&quot;')})">+ Create Quiz</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Module</th><th>Questions</th><th>Pass Score</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${quizzes.map(q=>`
+            <tr>
+              <td style="font-weight:500;">${q.title}</td>
+              <td style="color:var(--muted);font-size:12px;">${q.module_title||'Standalone'}</td>
+              <td>${q.question_count||0}</td>
+              <td>${q.pass_score_percent}%</td>
+              <td><span class="tag ${q.is_published?'tag-green':'tag-amber'}">${q.is_published?'Published':'Draft'}</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-ghost btn-sm" onclick="toggleQuizPublish(${q.id},${q.is_published?0:1})" style="color:${q.is_published?'var(--a400)':'var(--g600)'};">${q.is_published?'Unpublish':'Publish'}</button>
+                  <button class="btn btn-ghost btn-sm" onclick="deleteQuiz(${q.id})" style="color:var(--r400);">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+let quizBuilderQuestions = [];
+function openQuizBuilder(modules) {
+  quizBuilderQuestions = [{ id: 1, question_text: '', question_type: 'mcq', points: 10, options: [{text:'',correct:false},{text:'',correct:false},{text:'',correct:false},{text:'',correct:false}] }];
+  renderQuizBuilderModal(modules);
+}
+
+function renderQuizBuilderModal(modules) {
+  const modOpts = modules.map(m=>`<option value="${m.id}">${m.title}</option>`).join('');
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Create Quiz</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Quiz Title *</label><input class="form-input" id="qzTitle" placeholder="Quiz title"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="qzDesc" placeholder="Optional description" style="min-height:60px;"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Module (optional)</label>
+        <select class="form-select" id="qzModule"><option value="">Standalone Quiz</option>${modOpts}</select>
+      </div>
+      <div class="form-group"><label class="form-label">Pass Score (%)</label><input class="form-input" id="qzPass" type="number" value="60" min="0" max="100"></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;">Questions</h3>
+      <button class="btn btn-ghost btn-sm" onclick="addBuilderQ()">+ Add Question</button>
+    </div>
+    <div id="qzQuestions">${renderBuilderQs()}</div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:1rem;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-teal" onclick="saveQuiz()">Create Quiz</button>
+    </div>
+  `, true);
+}
+
+function renderBuilderQs() {
+  return quizBuilderQuestions.map((q,qi)=>`
+    <div class="qbuilder-q" id="bq-${q.id}">
+      <div class="qb-head">
+        <div class="qb-num">${qi+1}</div>
+        <input class="form-input" style="flex:1" placeholder="Question text" value="${q.question_text}" oninput="quizBuilderQuestions[${qi}].question_text=this.value">
+        <select class="form-select" style="width:130px" onchange="quizBuilderQuestions[${qi}].question_type=this.value">
+          <option value="mcq" ${q.question_type==='mcq'?'selected':''}>MCQ</option>
+          <option value="short_answer" ${q.question_type==='short_answer'?'selected':''}>Short Answer</option>
+        </select>
+        <input class="form-input" style="width:70px" type="number" value="${q.points}" placeholder="pts" oninput="quizBuilderQuestions[${qi}].points=+this.value">
+        ${quizBuilderQuestions.length>1?`<button class="btn btn-ghost btn-sm" onclick="removeBuilderQ(${q.id})" style="color:var(--r400);padding:6px 8px;">✕</button>`:''}
+      </div>
+      ${q.question_type!=='short_answer' ? `
+      <div style="padding-left:32px;">
+        ${q.options.map((o,oi)=>`
+          <div class="opt-builder">
+            <input type="checkbox" title="Correct answer" ${o.correct?'checked':''} onchange="quizBuilderQuestions[${qi}].options[${oi}].correct=this.checked">
+            <input class="form-input" placeholder="Option ${oi+1}" value="${o.text}" oninput="quizBuilderQuestions[${qi}].options[${oi}].text=this.value">
+            ${q.options.length>2?`<button class="btn btn-ghost btn-sm" onclick="removeOpt(${qi},${oi})" style="padding:4px 8px;color:var(--muted);">✕</button>`:''}
+          </div>`).join('')}
+        <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="addOpt(${qi})">+ Add Option</button>
+      </div>` : `<div style="padding-left:32px;font-size:12px;color:var(--muted);">Students will type a short text answer.</div>`}
+    </div>`).join('');
+}
+
+function addBuilderQ() {
+  quizBuilderQuestions.push({ id: Date.now(), question_text:'', question_type:'mcq', points:10, options:[{text:'',correct:false},{text:'',correct:false}] });
+  document.getElementById('qzQuestions').innerHTML = renderBuilderQs();
+}
+function removeBuilderQ(id) {
+  quizBuilderQuestions = quizBuilderQuestions.filter(q=>q.id!==id);
+  document.getElementById('qzQuestions').innerHTML = renderBuilderQs();
+}
+function addOpt(qi) {
+  quizBuilderQuestions[qi].options.push({text:'',correct:false});
+  document.getElementById('qzQuestions').innerHTML = renderBuilderQs();
+}
+function removeOpt(qi, oi) {
+  quizBuilderQuestions[qi].options.splice(oi,1);
+  document.getElementById('qzQuestions').innerHTML = renderBuilderQs();
+}
+
+async function saveQuiz() {
+  const title = document.getElementById('qzTitle').value;
+  if (!title) return toast('Title required','error');
+  const questions = quizBuilderQuestions.map(q=>({
+    question_text: q.question_text, question_type: q.question_type, points: q.points,
+    options: q.options.map(o=>({ option_text: o.text, is_correct: o.correct }))
+  }));
+  try {
+    await api('POST', '/quizzes', {
+      title, description: document.getElementById('qzDesc').value,
+      module_id: document.getElementById('qzModule').value || null,
+      pass_score_percent: document.getElementById('qzPass').value,
+      questions
+    });
+    closeModal(); toast('Quiz created!','success'); await renderAdminQuizzes();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function toggleQuizPublish(id, val) {
+  await api('PATCH', `/quizzes/${id}/publish`, { is_published: val });
+  toast(val?'Quiz published!':'Quiz unpublished','success'); await renderAdminQuizzes();
+}
+async function deleteQuiz(id) {
+  if (!confirm('Delete this quiz?')) return;
+  await api('DELETE', `/quizzes/${id}`);
+  toast('Quiz deleted','success'); await renderAdminQuizzes();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN: ASSIGNMENTS
+// ═══════════════════════════════════════════════════════════
+async function renderAdminAssignments() {
+  const [assigns, modules] = await Promise.all([api('GET','/assignments'), api('GET','/modules')]);
+  document.getElementById('adminAssignContent').innerHTML = `
+    <div class="admin-header">
+      <div><h1>Manage Assignments</h1><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">${assigns.length} assignments</p></div>
+      <button class="btn btn-teal" onclick="openCreateAssign(${JSON.stringify(modules).replace(/"/g,'&quot;')})">+ New Assignment</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Module</th><th>Due Date</th><th>Submissions</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${assigns.map(a=>`
+            <tr>
+              <td style="font-weight:500;">${a.title}</td>
+              <td style="color:var(--muted);font-size:12px;">${a.module_title||'Standalone'}</td>
+              <td style="font-size:12px;color:var(--muted);">${a.due_date?new Date(a.due_date).toLocaleDateString():'No deadline'}</td>
+              <td><span class="tag tag-teal">${a.submission_count||0} submitted</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-ghost btn-sm" onclick="viewSubmissions(${a.id},'${(a.title||'').replace(/'/g,"\\'")}')">View Submissions</button>
+                  <button class="btn btn-ghost btn-sm" onclick="deleteAssign(${a.id})" style="color:var(--r400);">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openCreateAssign(modules) {
+  const modOpts = modules.map(m=>`<option value="${m.id}">${m.title}</option>`).join('');
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Create Assignment</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="aTitle" placeholder="Assignment title"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="aDesc" placeholder="What should students do?" style="min-height:100px;"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Module</label><select class="form-select" id="aModule"><option value="">Standalone</option>${modOpts}</select></div>
+      <div class="form-group"><label class="form-label">Due Date</label><input class="form-input" id="aDue" type="datetime-local"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Max Score</label><input class="form-input" id="aScore" type="number" value="100" min="0"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-green" onclick="createAssign()">Create Assignment</button>
+    </div>
+  `);
+}
+
+async function createAssign() {
+  const title = document.getElementById('aTitle').value;
+  if (!title) return toast('Title required','error');
+  try {
+    await api('POST', '/assignments', {
+      title, description: document.getElementById('aDesc').value,
+      module_id: document.getElementById('aModule').value || null,
+      due_date: document.getElementById('aDue').value || null,
+      max_score: document.getElementById('aScore').value || 100
+    });
+    closeModal(); toast('Assignment created!','success'); await renderAdminAssignments();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteAssign(id) {
+  if (!confirm('Delete this assignment?')) return;
+  await api('DELETE', `/assignments/${id}`);
+  toast('Deleted','success'); await renderAdminAssignments();
+}
+
+async function viewSubmissions(id, title) {
+  const subs = await api('GET', `/assignments/${id}/submissions`);
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Submissions: ${title}</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    ${subs.length ? `
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Student</th><th>Submitted</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${subs.map(s=>`
+            <tr>
+              <td><div style="font-weight:500;">${s.name}</div><div style="font-size:11px;color:var(--muted);">${s.email}</div></td>
+              <td style="font-size:12px;">${new Date(s.submitted_at).toLocaleString()}</td>
+              <td><span class="tag ${s.status==='graded'?'tag-green':'tag-blue'}">${s.status}</span></td>
+              <td>${s.score!=null?s.score:'—'}</td>
+              <td>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  ${s.file_url?`<a href="${s.file_url}" target="_blank" class="btn btn-ghost btn-sm">View File</a>`:''}
+                  ${s.text_response?`<button class="btn btn-ghost btn-sm" onclick="alert('Response:\\n\\n${(s.text_response||'').replace(/'/g,'\\\'').replace(/\n/g,'\\n')}')">View Text</button>`:''}
+                  <button class="btn btn-ghost btn-sm" onclick="gradeSubmission(${id},${s.user_id},'${s.name}')">Grade</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>` : '<div style="text-align:center;padding:2rem;color:var(--muted);">No submissions yet</div>'}
+  `, true);
+}
+
+function gradeSubmission(assignId, userId, name) {
+  setModal(`
+    <div class="modal-header">
+      <h2 class="modal-title">Grade: ${name}</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Score</label><input class="form-input" id="gScore" type="number" min="0" max="100" placeholder="Score (0-100)"></div>
+    <div class="form-group"><label class="form-label">Feedback</label><textarea class="form-textarea" id="gFeedback" placeholder="Feedback for student..."></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-green" onclick="submitGrade(${assignId},${userId})">Submit Grade</button>
+    </div>
+  `);
+}
+
+async function submitGrade(assignId, userId) {
+  const score = document.getElementById('gScore').value;
+  const feedback = document.getElementById('gFeedback').value;
+  try {
+    await api('PATCH', `/assignments/${assignId}/submissions/${userId}/grade`, { score: +score, feedback });
+    closeModal(); toast('Grade submitted!','success');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN: USERS
+// ═══════════════════════════════════════════════════════════
+let userSearchTimer;
+async function renderAdminUsers(q='') {
+  const users = await api('GET', `/admin/users${q?`?q=${encodeURIComponent(q)}`:''}`);
+  document.getElementById('adminUsersContent').innerHTML = `
+    <div class="admin-header">
+      <div><h1>Users</h1><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">${users.length} accounts</p></div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <input class="form-input" placeholder="🔍 Search users by name or email..." oninput="clearTimeout(userSearchTimer);userSearchTimer=setTimeout(()=>renderAdminUsers(this.value),300)" style="max-width:400px;">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Points</th><th>Joined</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${users.map(u=>`
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">${(u.name||'?').charAt(0)}</div><span style="font-weight:500;">${u.name}</span></div></td>
+              <td style="color:var(--muted);font-size:13px;">${u.email}</td>
+              <td><span class="tag ${u.role==='admin'?'tag-red':u.role==='teacher'?'tag-blue':'tag-teal'}">${u.role}</span></td>
+              <td style="font-weight:600;color:var(--g800);">${fmt(u.eco_points)}</td>
+              <td style="font-size:12px;color:var(--muted);">${new Date(u.created_at).toLocaleDateString()}</td>
+              <td>
+                <select class="form-select" style="width:120px;font-size:12px;padding:5px 8px;" onchange="changeRole(${u.id},this.value)">
+                  <option value="student" ${u.role==='student'?'selected':''}>Student</option>
+                  <option value="teacher" ${u.role==='teacher'?'selected':''}>Teacher</option>
+                  <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+                </select>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+async function changeRole(id, role) {
+  await api('PATCH', `/admin/users/${id}`, { role });
+  toast('Role updated!','success');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN: ANALYTICS
+// ═══════════════════════════════════════════════════════════
+async function renderAdminAnalytics() {
+  const data = await api('GET', '/admin/analytics');
+  document.getElementById('adminAnalyticsContent').innerHTML = `
+    <div class="admin-header">
+      <div><h1>Platform Analytics</h1><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">Real-time overview</p></div>
+    </div>
+    <div class="grid-stats" style="margin-bottom:1.5rem;">
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-val" style="color:var(--t600)">${fmt(data.total_users)}</div></div>
+      <div class="stat-card"><div class="stat-label">Published Modules</div><div class="stat-val" style="color:var(--g600)">${data.published_modules} / ${data.total_modules}</div></div>
+      <div class="stat-card"><div class="stat-label">Quiz Attempts</div><div class="stat-val" style="color:var(--a400)">${fmt(data.quiz_attempts)}</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Quiz Score</div><div class="stat-val" style="color:var(--b600)">${data.avg_score||0}%</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap;">
+      <div class="card">
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:1rem;">Top Completed Modules</h3>
+        ${(data.top_modules||[]).map((m,i)=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px;">
+            <span>${i+1}. ${m.title}</span>
+            <span class="tag tag-teal">${m.completions} completions</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:1rem;">Recent Activity</h3>
+        ${(data.recent_activity||[]).map(a=>`
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border);">
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--t400);margin-top:5px;flex-shrink:0;"></div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><b>${a.name}</b> — ${a.action.replace(/_/g,' ')}</div>
+              <div style="font-size:10px;color:var(--muted);">${ago(a.created_at)}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BOOTSTRAP
+// ═══════════════════════════════════════════════════════════
+(async () => {
+  if (token) {
+    try {
+      currentUser = await api('GET', '/auth/me');
+      initApp();
+    } catch { logout(); }
+  }
+})();
+</script>
+</body>
+</html>
