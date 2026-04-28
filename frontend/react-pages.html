@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoLearn React Pages Demo</title>
+  <style>
+    body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #f4f7f3; color: #1b2421; }
+    .page-shell { max-width: 980px; margin: 0 auto; padding: 24px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.35rem; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 14px; background: linear-gradient(135deg, #3b6d11, #97c459); display: grid; place-items: center; color: #fff; font-size: 1.05rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; }
+    button.nav-button { border: none; border-radius: 999px; padding: 10px 16px; background: #dfe7dc; color: #1b2421; cursor: pointer; transition: transform 0.16s, background 0.16s; }
+    button.nav-button:hover { transform: translateY(-1px); background: #c9d8b8; }
+    button.nav-button.active { background: #639922; color: #fff; }
+    .hero { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 18px 45px rgba(34,50,26,0.08); margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 8px; font-size: 2rem; }
+    .hero p { margin: 0; color: #555; line-height: 1.7; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 18px; }
+    .card { background: #fff; border-radius: 20px; box-shadow: 0 8px 24px rgba(34,50,26,0.06); padding: 20px; }
+    .card h2 { margin: 0 0 10px; font-size: 1.15rem; }
+    .card p { margin: 0; color: #5d6b59; line-height: 1.65; }
+    .highlight { color: #639922; font-weight: 700; }
+    .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .list-item { background: #f9fcf6; border: 1px solid #e0e9d9; border-radius: 16px; padding: 16px; }
+    .list-item strong { display: block; margin-bottom: 6px; }
+    footer { margin-top: 32px; text-align: center; color: #6d7767; font-size: 0.95rem; }
+    @media (max-width: 720px) { header { flex-direction: column; align-items: stretch; } }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script>
+    const { useState } = React;
+
+    function PageShell({ title, description, children }) {
+      return (
+        React.createElement('section', { className: 'page-shell' },
+          React.createElement('div', { className: 'hero' },
+            React.createElement('h1', null, title),
+            React.createElement('p', null, description)
+          ),
+          children
+        )
+      );
+    }
+
+    function HomePage() {
+      return (
+        React.createElement(PageShell, {
+          title: 'Welcome to EcoLearn React Demo',
+          description: 'This demo shows dummy React page components with navigation and simple content sections.'
+        },
+          React.createElement('div', { className: 'card-grid' },
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'What is this?'),
+              React.createElement('p', null, 'A lightweight React demo built on CDN scripts. Each page is a separate component with its own content.')
+            ),
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'Why React pages?'),
+              React.createElement('p', null, 'React components let you build reusable UI sections and switch between pages without full page reloads.')
+            )
+          )
+        )
+      );
+    }
+
+    function CoursesPage() {
+      return (
+        React.createElement(PageShell, {
+          title: 'Courses',
+          description: 'Browse example course pages and module cards for your learning platform.'
+        },
+          React.createElement('ul', { className: 'list' },
+            React.createElement('li', { className: 'list-item' },
+              React.createElement('strong', null, 'Renewable Energy 101'),
+              'A beginner-friendly course about solar, wind, and sustainable electricity.'
+            ),
+            React.createElement('li', { className: 'list-item' },
+              React.createElement('strong', null, 'Zero-Waste Living'),
+              'Practical habits and tips for reducing waste in daily life.'
+            ),
+            React.createElement('li', { className: 'list-item' },
+              React.createElement('strong', null, 'Water Conservation'),
+              'Learn how to save water at home, school, and in the community.'
+            )
+          )
+        )
+      );
+    }
+
+    function ProfilePage() {
+      return (
+        React.createElement(PageShell, {
+          title: 'Profile',
+          description: 'A simple profile page component with user details and progress summary.'
+        },
+          React.createElement('div', { className: 'card-grid' },
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'Eco Learner'),
+              React.createElement('p', null, 'Name: Jane Doe'),
+              React.createElement('p', null, 'Role: Student'),
+              React.createElement('p', null, 'Points: ', React.createElement('span', { className: 'highlight' }, '420'))
+            ),
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'Progress'),
+              React.createElement('p', null, 'Modules completed: ', React.createElement('span', { className: 'highlight' }, '3')),
+              React.createElement('p', null, 'Quizzes passed: ', React.createElement('span', { className: 'highlight' }, '5'))
+            )
+          )
+        )
+      );
+    }
+
+    function SettingsPage() {
+      return (
+        React.createElement(PageShell, {
+          title: 'Settings',
+          description: 'A dummy settings page showing reusable component structure.'
+        },
+          React.createElement('div', { className: 'card-grid' },
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'Notification preferences'),
+              React.createElement('p', null, 'Enable email and push updates for new courses, certifications, and announcements.')
+            ),
+            React.createElement('div', { className: 'card' },
+              React.createElement('h2', null, 'Theme'),
+              React.createElement('p', null, 'Switch between light and dark themes using reusable UI controls.')
+            )
+          )
+        )
+      );
+    }
+
+    function App() {
+      const [page, setPage] = useState('home');
+      const pages = {
+        home: HomePage,
+        courses: CoursesPage,
+        profile: ProfilePage,
+        settings: SettingsPage,
+      };
+      const CurrentPage = pages[page];
+
+      return (
+        React.createElement(React.Fragment, null,
+          React.createElement('header', null,
+            React.createElement('div', { className: 'brand' },
+              React.createElement('span', { className: 'brand-mark' }, '🌿'),
+              'EcoLearn React Demo'
+            ),
+            React.createElement('nav', null,
+              Object.keys(pages).map(key => (
+                React.createElement('button', {
+                  key,
+                  className: `nav-button ${page === key ? 'active' : ''}`,
+                  onClick: () => setPage(key)
+                }, key.charAt(0).toUpperCase() + key.slice(1))
+              ))
+            )
+          ),
+          React.createElement(CurrentPage, null),
+          React.createElement('footer', null, 'This demo shows React page components in a single-page app.')
+        )
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>
