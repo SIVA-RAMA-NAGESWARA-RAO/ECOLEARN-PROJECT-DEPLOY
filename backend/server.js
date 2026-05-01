@@ -50,11 +50,17 @@ const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
 app.use(express.static(FRONTEND_DIR));
 
 // ── MySQL Pool ──────────────────────────────────────────────────────────────
+const poolConfig = process.env.DATABASE_URL 
+  ? { uri: process.env.DATABASE_URL }
+  : {
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASS || '',
+      database: process.env.DB_NAME || 'ecolearn',
+    };
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'ecolearn',
+  ...poolConfig,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
