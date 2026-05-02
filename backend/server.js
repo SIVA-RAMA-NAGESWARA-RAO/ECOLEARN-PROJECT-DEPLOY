@@ -10,9 +10,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
-
+const fs = require('fs');;
+const uuidv4 = () => require('crypto').randomUUID();
 function loadAppProperties(filepath) {
   if (!fs.existsSync(filepath)) return;
   const content = fs.readFileSync(filepath, 'utf8');
@@ -64,8 +63,24 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  timezone: '+00:00'
+  timezone: '+00:00',
+  multipleStatements: true,
+  ssl: process.env.DATABASE_URL || process.env.DB_HOST ? { minVersion: 'TLSv1.2' } : null
 });
+
+// Auto-init DB
+(async function initDB() {
+  try {
+    const schemaPath = path.join(__dirname, 'schema.sql');
+    if (fs.existsSync(schemaPath)) {
+      const schema = fs.readFileSync(schemaPath, 'utf8');
+      await pool.query(schema);
+      console.log('Database schema automatically initialized/verified.');
+    }
+  } catch (err) {
+    console.error('Error initializing database:', err.message);
+  }
+})();
 
 // ── Multer Storage ──────────────────────────────────────────────────────────
 function makeStorage(subfolder) {
@@ -133,6 +148,21 @@ async function recalcModuleProgress(userId, moduleId) {
     await pool.query('UPDATE users SET eco_points = eco_points + ? WHERE id=? AND NOT EXISTS (SELECT 1 FROM module_progress WHERE user_id=? AND module_id=? AND points_awarded>0)', [mod.points_reward, userId, userId, moduleId]);
   }
 }
+
+// ════════════════════════════════════════════════════════════════════════════
+//  INIT DB ROUTE
+// ════════════════════════════════════════════════════════════════════════════
+app.get('/api/init-db', async (req, res) => {
+  try {
+    const schemaPath = path.join(__dirname, 'schema.sql');
+    if (!fs.existsSync(schemaPath)) return res.status(404).json({ error: 'schema.sql not found' });
+    const schema = fs.readFileSync(schemaPath, 'utf8');
+    await pool.query(schema);
+    res.json({ message: 'Database schema successfully initialized.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message, stack: err.stack });
+  }
+});
 
 // ════════════════════════════════════════════════════════════════════════════
 //  AUTH ROUTES

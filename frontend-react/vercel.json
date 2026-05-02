@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/(api|uploads)/:path*",
-      "destination": "/index.html"
+      "source": "/api/:path*",
+      "destination": "https://backend-ecolearn.vercel.app/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://backend-ecolearn.vercel.app/uploads/:path*"
     },
     {
       "source": "/((?!assets|favicon.ico|index.html|.*\\..*).*)",

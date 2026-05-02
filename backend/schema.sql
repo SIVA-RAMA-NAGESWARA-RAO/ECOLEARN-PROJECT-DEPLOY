@@ -1,8 +1,7 @@
 -- EcoLearn Platform — Full MySQL Schema
 -- Run this in MySQL Workbench to set up the database
 
-CREATE DATABASE IF NOT EXISTS ecolearn CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ecolearn;
+-- Tables will be created in the currently connected database (e.g., test)
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
