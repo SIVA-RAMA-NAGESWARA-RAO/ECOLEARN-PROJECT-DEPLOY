@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://backend-ecolearn.vercel.app/api/:path*"
+      "destination": "https://ecolearn-backend.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://backend-ecolearn.vercel.app/uploads/:path*"
+      "destination": "https://ecolearn-backend.onrender.com/uploads/:path*"
     },
     {
       "source": "/((?!assets|favicon.ico|index.html|.*\\..*).*)",

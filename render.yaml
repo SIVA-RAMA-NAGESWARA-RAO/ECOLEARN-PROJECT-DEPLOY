@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ecolearn-backend
+    env: docker
+    dockerContext: ecolearn-spring-boot
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 8080
