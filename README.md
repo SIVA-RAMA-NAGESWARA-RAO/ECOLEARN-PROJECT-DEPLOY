@@ -1,15 +1,39 @@
-# EcoLearn Platform — Full Stack Setup Guide
+# EcoLearn Platform — Full Stack Platform
 
-## Tech Stack
-- **Frontend:** Pure HTML/CSS/JS (single file, no build step)
-- **Backend:** Node.js + Express
-- **Database:** MySQL (view all data in MySQL Workbench)
-- **File Uploads:** Multer (local storage → `uploads/` folder)
-- **Auth:** JWT tokens + bcrypt
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SIVA-RAMA-NAGESWARA-RAO/ECOLEARN-PROJECT-DEPLOY)
+
+## 🚀 Live Deployment
+1.  **Backend (Spring Boot)**: Click the button above to deploy to Render.
+2.  **Frontend (React)**: Import the `frontend-react` folder to Vercel.
 
 ---
 
-## Step 1: MySQL Setup
+## Tech Stack
+-   **Frontend:** React + Vite + Tailwind CSS (in `frontend-react/`)
+-   **Backend:** Spring Boot (Java 17) (in `ecolearn-spring-boot/`)
+-   **Database:** MySQL / TiDB Cloud
+-   **Infrastructure:** Render (Backend), Vercel (Frontend)
+
+---
+
+## 🛠️ Backend Deployment (Render)
+1.  Connect your GitHub repo to Render.
+2.  Render will auto-detect `render.yaml`.
+3.  Set your environment variables:
+    -   `DATABASE_URL`: `jdbc:mysql://host:port/db`
+    -   `DB_USER`: your_db_user
+    -   `DB_PASS`: your_db_pass
+    -   `JWT_SECRET`: your_secret
+
+## 🎨 Frontend Deployment (Vercel)
+1.  Import `ECOLEARN-PROJECT-DEPLOY` to Vercel.
+2.  Set **Root Directory** to `frontend-react`.
+3.  It will automatically use `vercel.json` to proxy requests to Render.
+
+---
+
+## Step 1: Database Setup
+... (rest of the content)
 
 1. Open **MySQL Workbench**
 2. Connect to your local MySQL server
